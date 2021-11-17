@@ -39,6 +39,7 @@ parser.add_argument(
         "fr",
         "sp",
         "dutch",
+        "CT5K",
     ],
 )
 parser.add_argument(
@@ -66,7 +67,7 @@ parser.add_argument("--batch_size", default=32, type=int)
 
 args = parser.parse_args()
 
-args.data_dir = r"/your/work/space/RoBERTaABSA/Dataset"
+#args.data_dir = r"/your/work/space/RoBERTaABSA/Dataset"
 
 fitlog.add_hyper_in_file(__file__)
 fitlog.add_hyper(args)
@@ -245,6 +246,9 @@ tr_data = DataSetIter(
 )
 
 
+os.makedirs(f"{root_fp}/save_models", exist_ok=True)
+train_save_folder = f"{root_fp}/save_models/aspect_model-{model_type}-{args.dataset}-FT"
+
 trainer = Trainer(
     tr_data,
     model,
@@ -261,7 +265,7 @@ trainer = Trainer(
     metrics=[AccuracyMetric(), ClassifyFPreRecMetric(f_type="macro")],
     metric_key=None,
     validate_every=-1,
-    save_path=None,
+    save_path=train_save_folder,
     use_tqdm=False,
     device=0,
     callbacks=callbacks,

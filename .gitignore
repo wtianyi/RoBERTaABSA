@@ -133,3 +133,5 @@ dmypy.json
 .pyre/
 .pkl
 .bin
+/Train/save_models/
+/Train/caches/
